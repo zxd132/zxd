@@ -1,1 +1,40 @@
-<input id="url" placeholder="ここは空のはず">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>zxd</title>
+</head>
+<body>
+
+<h2>動画再生</h2>
+
+<input id="url" placeholder="YouTube URL">
+<button onclick="play()">再生</button>
+
+<iframe id="player" width="560" height="315" allowfullscreen></iframe>
+
+<script>
+function getID(url) {
+  try {
+    const u = new URL(url);
+    return u.searchParams.get("v")
+      || (u.hostname.includes("youtu.be") ? u.pathname.slice(1) : null)
+      || (u.pathname.includes("/shorts/") ? u.pathname.split("/shorts/")[1] : null);
+  } catch {
+    return null;
+  }
+}
+
+function play() {
+  const url = document.getElementById("url").value;
+  const id = getID(url);
+
+  if (!id) return alert("URL入れて");
+
+  document.getElementById("player").src =
+    "https://www.youtube.com/embed/" + id;
+}
+</script>
+
+</body>
+</html>
