@@ -8,22 +8,18 @@
 
 <h1>zxd</h1>
 
-<input type="file" id="video" accept="video/*">
+<input type="text" id="url" placeholder="動画URLを入力" style="width:400px;">
+<button onclick="playVideo()">再生</button>
 
 <br><br>
 
 <video id="player" width="640" controls></video>
 
 <script>
-const input = document.getElementById("video");
-const player = document.getElementById("player");
-
-input.addEventListener("change", () => {
-    const file = input.files[0];
-    if (file) {
-        player.src = URL.createObjectURL(file);
-    }
-});
+function playVideo() {
+    const url = document.getElementById("url").value;
+    document.getElementById("player").src = url;
+}
 </script>
 
 </body>
