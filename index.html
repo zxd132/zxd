@@ -1,27 +1,33 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>zxd player</title>
-
 <style>
 body {
   font-family: sans-serif;
-  text-align: center;
   margin: 0;
   padding: 20px;
   background: #111;
   color: white;
+
+  /* これ追加 → 全体を中央寄せ */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* これ追加 */
 h2 {
   margin-bottom: 20px;
 }
 
+/* 入力エリア */
+.box {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 input {
-  width: 90%;
-  max-width: 600px;
+  width: 70%;
+  max-width: 500px;
   padding: 12px;
   font-size: 16px;
   border-radius: 8px;
@@ -29,10 +35,7 @@ input {
 }
 
 button {
-  width: 90%;
-  max-width: 600px;
-  padding: 12px;
-  margin-top: 10px;
+  padding: 12px 20px;
   font-size: 16px;
   border: none;
   border-radius: 8px;
@@ -41,6 +44,7 @@ button {
   cursor: pointer;
 }
 
+/* 🎯 ここが重要（動画を中央） */
 iframe {
   width: 90%;
   max-width: 800px;
@@ -48,46 +52,6 @@ iframe {
   margin-top: 20px;
   border: none;
   border-radius: 10px;
+  display: block;
 }
 </style>
-</head>
-
-<body>
-
-<h2>zxd YouTube Player</h2>
-
-<input id="url" placeholder="YouTube URLを貼る">
-<br>
-<button onclick="play()">再生</button>
-
-<iframe id="player" allowfullscreen></iframe>
-
-<script>
-function getID(url){
-  try {
-    const u = new URL(url);
-
-    if (u.searchParams.get("v")) return u.searchParams.get("v");
-    if (u.hostname.includes("youtu.be")) return u.pathname.slice(1);
-    if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1];
-
-  } catch(e){}
-  return null;
-}
-
-function play(){
-  const url = document.getElementById("url").value;
-  const id = getID(url);
-
-  if(!id){
-    alert("YouTube URLを入れてね");
-    return;
-  }
-
-  document.getElementById("player").src =
-    "https://www.youtube.com/embed/" + id;
-}
-</script>
-
-</body>
-</html>
