@@ -102,29 +102,4 @@ function getID(url) {
 
     if (u.searchParams.get("v")) return u.searchParams.get("v");
     if (u.hostname.includes("youtu.be")) return u.pathname.slice(1);
-    if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1];
-
-  } catch (e) {}
-  return null;
-}
-
-function play() {
-  const url = document.getElementById("url").value;
-  const id = getID(url);
-
-  if (!id) {
-    alert("YouTube URLを入れてね");
-    return;
-  }
-
-  load(id);
-}
-
-function load(id) {
-  document.getElementById("player").src =
-    "https://www.youtube.com/embed/" + id;
-}
-</script>
-
-</body>
-</html>
+    if (u.pathname.includes("/shorts/")) return u.pat
