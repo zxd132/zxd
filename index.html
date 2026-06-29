@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zxd player</title>
 
+<style>
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #111;
+  color: white;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 80%;
+  max-width: 600px;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.play {
+  background: red;
+  color: white;
+}
+
+.save {
+  background: #2b7cff;
+  color: white;
+}
+
+iframe {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 800px;
+  height: 400px;
+  border: none;
+  border-radius: 10px;
+}
+
+.list {
+  margin-top: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.item {
+  background: #222;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🎥 zxd YouTube Player</h2>
+
+<input id="url" placeholder="YouTube URLを貼る">
+
+<br>
+
+<button class="play" onclick="play()">再生</button>
+<button class="save" onclick="addFav()">お気に入り</button>
+
+<iframe id="player"></iframe>
+
+<h3>⭐ お気に入り</h3>
+<div id="list" class="list"></div>
+
+<script>
+let favs = JSON.parse(localStorage.getItem("favs") || "[]");
+
+// 表示
+render();
+
+function getID(url){
+  try {
+    const u = new URL(url);
+    if (u.searchParams.get("v")) return u.searchParams.get("v");
+    if (u.hostname.includes("youtu.be")) return u.pathname.slice(1);
+    if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1];
+  } catch(e){}
+  return null;
+}
+
+function play(url){
+  const input = url || document.getElementById("url").value;
+  const id = getID(input);
+
+  if(!id){
+    alert("URLを入れてね");
+    return;
+  }
+
+  document.getElementById("player").src =
+    "https://www.youtube.com/embed/" + id;
+}
+
+function addFav(){
+  const url = document.getElementById("url").value;
+  if(!url){
+    alert("URLを入れてね");
+    return;
+  }
+
+  favs.push(url);
+
+  // 💾 保存
+  localStorage.setItem("favs", JSON.stringify(favs));
+
+  render();
+}
+
+function render(){
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  favs.forEach((url) => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.textContent = "▶ " + url;
+
+    div.onclick = () => play(url);
+
+    list.appendChild(div);
+  });
+}
+</script>
+
+</body>
+</html>
