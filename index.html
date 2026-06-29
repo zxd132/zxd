@@ -2,23 +2,48 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>zxd</title>
+<title>Video Tool</title>
+<style>
+body { font-family: sans-serif; background:#111; color:white; text-align:center; }
+input { width:70%; padding:10px; margin-top:20px; }
+button { padding:10px 20px; margin:10px; }
+iframe { margin-top:20px; }
+</style>
 </head>
+
 <body>
 
-<h1>zxd</h1>
+<h1>Video Tool</h1>
 
-<input type="text" id="url" placeholder="動画URLを入力" style="width:400px;">
-<button onclick="playVideo()">再生</button>
+<p>YouTube URLを貼り付けてください</p>
 
-<br><br>
+<input id="url" placeholder="https://www.youtube.com/watch?v=...">
+<br>
+<button onclick="loadVideo()">表示</button>
 
-<video id="player" width="640" controls></video>
+<div id="info"></div>
+
+<iframe id="player" width="560" height="315" frameborder="0"></iframe>
 
 <script>
-function playVideo() {
-    const url = document.getElementById("url").value;
-    document.getElementById("player").src = url;
+function loadVideo() {
+  const url = document.getElementById("url").value;
+
+  const id = url.split("v=")[1]?.split("&")[0];
+
+  if (!id) {
+    alert("URLが正しくないよ");
+    return;
+  }
+
+  // 再生
+  document.getElementById("player").src =
+    "https://www.youtube.com/embed/" + id;
+
+  // サムネ表示
+  document.getElementById("info").innerHTML = `
+    <img src="https://img.youtube.com/vi/${id}/maxresdefault.jpg" width="300">
+  `;
 }
 </script>
 
