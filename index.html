@@ -2,89 +2,102 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Video Player</title>
+<title>zxd Video Player</title>
 
 <style>
 body {
   font-family: sans-serif;
-  text-align: center;
   background: #111;
   color: white;
-  margin-top: 30px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+h1 {
+  margin-bottom: 20px;
 }
 
 input {
   width: 70%;
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
+  border-radius: 6px;
+  border: none;
 }
 
 button {
-  padding: 10px 20px;
   margin-top: 10px;
+  padding: 10px 25px;
+  font-size: 16px;
   cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background: red;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.8;
 }
 
 iframe {
-  margin-top: 20px;
+  margin-top: 25px;
   border: none;
 }
 </style>
-
 </head>
 
 <body>
 
-<h2>zxd Video Player</h2>
+<h1>zxd</h1>
 
 <input id="url" placeholder="YouTube URLを入力">
-
 <br>
-
 <button onclick="play()">再生</button>
 
-<br><br>
+<br>
 
 <iframe id="player" width="560" height="315" allowfullscreen></iframe>
 
 <script>
-function play() {
-  const url = document.getElementById("url").value;
-
-  let id = null;
-
+function getID(url) {
   try {
     const u = new URL(url);
 
-    // watch?v=
     if (u.searchParams.get("v")) {
-      id = u.searchParams.get("v");
+      return u.searchParams.get("v");
     }
 
-    // youtu.be
-    if (!id && u.hostname.includes("youtu.be")) {
-      id = u.pathname.slice(1);
+    if (u.hostname.includes("youtu.be")) {
+      return u.pathname.slice(1);
     }
 
-    // shorts
-    if (!id && u.pathname.includes("/shorts/")) {
-      id = u.pathname.split("/shorts/")[1];
+    if (u.pathname.includes("/shorts/")) {
+      return u.pathname.split("/shorts/")[1];
     }
 
   } catch (e) {
-    alert("正しいURLを入れてね");
-    return;
+    return null;
   }
+
+  return null;
+}
+
+function play() {
+  const url = document.getElementById("url").value;
+
+  const id = getID(url);
 
   if (!id) {
-    alert("YouTubeのURLじゃない可能性があるよ");
+    alert("YouTubeのURLを入れてね");
     return;
   }
-
-  console.log("ID:", id);
 
   document.getElementById("player").src =
     "https://www.youtube.com/embed/" + id;
+
+  // 入力欄をクリア（残らないように）
+  document.getElementById("url").value = "";
 }
 </script>
 
