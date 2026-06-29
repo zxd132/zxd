@@ -1,3 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zxd player</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  background: #111;
+  color: white;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 90%;
+  max-width: 600px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  width: 90%;
+  max-width: 600px;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: red;
+  color: white;
+  cursor: pointer;
+}
+
+iframe {
+  width: 90%;
+  max-width: 800px;
+  height: 400px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>zxd YouTube Player</h2>
+
+<input id="url" placeholder="YouTube URLを貼る">
+<br>
+<button onclick="play()">再生</button>
+
+<iframe id="player" allowfullscreen></iframe>
+
 <script>
-alert(location.href);
+function getID(url){
+  try {
+    const u = new URL(url);
+
+    if (u.searchParams.get("v")) return u.searchParams.get("v");
+    if (u.hostname.includes("youtu.be")) return u.pathname.slice(1);
+    if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1];
+
+  } catch(e){}
+  return null;
+}
+
+function play(){
+  const url = document.getElementById("url").value;
+  const id = getID(url);
+
+  if(!id){
+    alert("YouTube URLを入れてね");
+    return;
+  }
+
+  document.getElementById("player").src =
+    "https://www.youtube.com/embed/" + id;
+}
 </script>
+
+</body>
+</html>
