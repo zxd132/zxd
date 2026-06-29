@@ -1,1 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zxd search</title>
 
+<style>
+body {
+  font-family: sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 70%;
+  max-width: 500px;
+  padding: 12px;
+  font-size: 16px;
+}
+
+button {
+  padding: 12px 16px;
+  margin-left: 5px;
+  background: #2b7cff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 20px;
+  text-align: left;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+a {
+  color: #2b7cff;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🔍 zxd 検索（履歴なし）</h2>
+
+<input id="q" placeholder="検索ワード">
+<button onclick="search()">検索</button>
+
+<div id="results" class="result"></div>
+
+<script>
+function search(){
+  const q = document.getElementById("q").value.trim();
+  const r = document.getElementById("results");
+
+  if(!q){
+    alert("検索ワードを入力してね");
+    return;
+  }
+
+  // ⭐ zxd専用ページ
+  if(q === "zxd"){
+    r.innerHTML = `
+      <div class="card">
+        <h3>zxd - Webアプリ</h3>
+        <p>動画・検索・学習用ツール</p>
+      </div>
+    `;
+    return;
+  }
+
+  // 通常検索（履歴なし）
+  r.innerHTML = `
+    <div class="card">
+      <h3>${q} - Wikipedia風</h3>
+      <p>${q}についての説明ページ（サンプル表示）</p>
+      <a href="https://ja.wikipedia.org/wiki/${q}" target="_blank">開く</a>
+    </div>
+
+    <div class="card">
+      <h3>${q} - Google検索</h3>
+      <a href="https://www.google.com/search?q=${q}" target="_blank">検索する</a>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
