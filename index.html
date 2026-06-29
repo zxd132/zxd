@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>zxd</title>
+<meta charset="UTF-8">
+<title>zxd</title>
 </head>
 <body>
-  <h1>zxdへようこそ！</h1>
-  <p>これは初めてのWebサイトです。</p>
+
+<h1>zxd</h1>
+
+<input type="file" id="video" accept="video/*">
+
+<br><br>
+
+<video id="player" width="640" controls></video>
+
+<script>
+const input = document.getElementById("video");
+const player = document.getElementById("player");
+
+input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (file) {
+        player.src = URL.createObjectURL(file);
+    }
+});
+</script>
+
 </body>
 </html>
