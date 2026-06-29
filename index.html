@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>test</title>
-</head>
+<html>
 <body>
 
-<input id="url" style="width:300px" value="https://www.youtube.com/watch?v=MP-XoUgDnhU">
+<input id="url" style="width:300px"
+value="https://www.youtube.com/watch?v=MP-XoUgDnhU">
+
 <button onclick="play()">再生</button>
 
-<br><br>
-
-<iframe id="player" width="560" height="315" allowfullscreen></iframe>
+<iframe id="player" width="560" height="315"
+allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <script>
 function play() {
@@ -19,7 +16,7 @@ function play() {
 
   const id = new URL(url).searchParams.get("v");
 
-  console.log("ID:", id); // ←確認用
+  console.log("video id =", id);
 
   document.getElementById("player").src =
     "https://www.youtube.com/embed/" + id;
