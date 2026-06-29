@@ -3,19 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>zxd search</title>
+<title>学習動画ツール</title>
 
 <style>
 body {
   font-family: sans-serif;
-  background: #f4f6f8;
   margin: 0;
   padding: 20px;
+  background: #f4f6f8;
   text-align: center;
 }
 
 h2 {
-  margin-bottom: 20px;
+  color: #333;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 input {
@@ -26,80 +33,59 @@ input {
 }
 
 button {
-  padding: 12px 16px;
-  margin-left: 5px;
+  padding: 12px 18px;
   background: #2b7cff;
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 6px;
 }
 
-.result {
+iframe {
   margin-top: 20px;
-  text-align: left;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.card {
-  background: white;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-a {
-  color: #2b7cff;
-  text-decoration: none;
+  width: 90%;
+  max-width: 800px;
+  height: 400px;
+  border: none;
 }
 </style>
 </head>
 
 <body>
 
-<h2>🔍 zxd 検索（履歴なし）</h2>
+<h2>📘 学習動画ツール</h2>
 
-<input id="q" placeholder="検索ワード">
-<button onclick="search()">検索</button>
+<div class="box">
+  <input id="url" placeholder="動画URLを貼る">
+  <button onclick="play()">再生</button>
+</div>
 
-<div id="results" class="result"></div>
+<iframe id="player"></iframe>
 
 <script>
-function search(){
-  const q = document.getElementById("q").value.trim();
-  const r = document.getElementById("results");
+function getID(url){
+  try {
+    const u = new URL(url);
 
-  if(!q){
-    alert("検索ワードを入力してね");
+    if (u.searchParams.get("v")) return u.searchParams.get("v");
+    if (u.hostname.includes("youtu.be")) return u.pathname.slice(1);
+    if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1];
+
+  } catch(e){}
+  return null;
+}
+
+function play(){
+  const url = document.getElementById("url").value;
+  const id = getID(url);
+
+  if(!id){
+    alert("URLを入力してください");
     return;
   }
 
-  // ⭐ zxd専用ページ
-  if(q === "zxd"){
-    r.innerHTML = `
-      <div class="card">
-        <h3>zxd - Webアプリ</h3>
-        <p>動画・検索・学習用ツール</p>
-      </div>
-    `;
-    return;
-  }
-
-  // 通常検索（履歴なし）
-  r.innerHTML = `
-    <div class="card">
-      <h3>${q} - Wikipedia風</h3>
-      <p>${q}についての説明ページ（サンプル表示）</p>
-      <a href="https://ja.wikipedia.org/wiki/${q}" target="_blank">開く</a>
-    </div>
-
-    <div class="card">
-      <h3>${q} - Google検索</h3>
-      <a href="https://www.google.com/search?q=${q}" target="_blank">検索する</a>
-    </div>
-  `;
+  document.getElementById("player").src =
+    "https://www.youtube.com/embed/" + id;
 }
 </script>
 
