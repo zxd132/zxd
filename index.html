@@ -2,63 +2,27 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>zxd</title>
+<title>test</title>
 </head>
-<body style="font-family:sans-serif;text-align:center;background:#111;color:white;">
+<body>
 
-<h1>zxd</h1>
+<input id="url" style="width:300px" value="https://www.youtube.com/watch?v=MP-XoUgDnhU">
+<button onclick="play()">再生</button>
 
-<input id="url" style="width:70%;padding:10px;" placeholder="YouTube URL">
-<br>
-<button onclick="loadVideo()">再生</button>
+<br><br>
 
-<div id="info"></div>
-
-<br>
-
-<iframe id="player" width="560" height="315" frameborder="0"
-allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe id="player" width="560" height="315" allowfullscreen></iframe>
 
 <script>
-function getYouTubeID(url){
-  try {
-    const u = new URL(url);
-
-    // youtu.be形式
-    if (u.hostname.includes("youtu.be")) {
-      return u.pathname.slice(1);
-    }
-
-    // watch?v=形式
-    if (u.searchParams.get("v")) {
-      return u.searchParams.get("v");
-    }
-
-    // shorts形式
-    if (u.pathname.includes("/shorts/")) {
-      return u.pathname.split("/shorts/")[1];
-    }
-
-  } catch (e) {
-    return null;
-  }
-  return null;
-}
-
-function loadVideo() {
+function play() {
   const url = document.getElementById("url").value;
-  const id = getYouTubeID(url);
 
-  if (!id) {
-    alert("YouTubeのURLが正しくないよ");
-    return;
-  }
+  const id = new URL(url).searchParams.get("v");
+
+  console.log("ID:", id); // ←確認用
 
   document.getElementById("player").src =
     "https://www.youtube.com/embed/" + id;
-
-  document.getElementById("info").innerHTML =
-    `<p>再生中: ${id}</p>`;
 }
 </script>
 
